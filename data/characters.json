@@ -1,0 +1,78 @@
+{
+    "player": [
+        {
+            "id": "huangfu_lai",
+            "name": "皇甫赖",
+            "hp": 3,
+            "atk": 1,
+            "weapon": "none",
+            "energy": 0,
+            "skill": {
+                "name": "沉淀",
+                "desc": "消耗1能量，下次攻击翻倍，可叠加",
+                "cost": 1,
+                "uses": -1,
+                "timing": "anytime"
+            },
+            "passive": {
+                "name": "耍赖",
+                "desc": "受到攻击时可选择免疫，每场限一次",
+                "uses": 1,
+                "timing": "on_take_damage"
+            }
+        },
+        {
+            "id": "shui_niu",
+            "name": "水牛",
+            "hp": 4,
+            "atk": 1,
+            "weapon": "none",
+            "energy": 0,
+            "skill": {
+                "name": "多练",
+                "desc": "消耗1能量，敌方回合无效",
+                "cost": 1,
+                "uses": -1,
+                "timing": "on_enemy_turn_start"
+            },
+            "passive": {
+                "name": "菜",
+                "desc": "拼点胜利时，可选择使下次获得能量翻倍（可叠加）",
+                "uses": -1,
+                "timing": "on_dice_win"
+            }
+        }
+    ],
+    "enemy": [
+        {
+            "id": "classmate_strange",
+            "name": "陌生的同学",
+            "hp": 3,
+            "atk": 1,
+            "weapon": "none",
+            "energy": 0,
+            "skill": null,
+            "passive": null
+        },
+        {
+            "id": "classmate_ordinary",
+            "name": "普通的同学",
+            "hp": 3,
+            "atk": 1,
+            "weapon": "none",
+            "energy": 0,
+            "skill": null,
+            "passive": null
+        },
+        {
+            "id": "classmate_maybe",
+            "name": "可能是同学",
+            "hp": 3,
+            "atk": 1,
+            "weapon": "none",
+            "energy": 0,
+            "skill": null,
+            "passive": null
+        }
+    ]
+}
