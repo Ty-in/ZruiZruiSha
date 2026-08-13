@@ -1,2 +1,1 @@
-# new_project
-nothing here...
+学生时代经典卡牌游戏，正在持续更新中
