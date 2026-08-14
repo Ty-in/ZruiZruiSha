@@ -41,38 +41,74 @@
                 "uses": -1,
                 "timing": "on_dice_win"
             }
+        },
+        {
+            "id": "zrui_ge",
+            "name": "zrui哥",
+            "hp": 9,
+            "atk": 1,
+            "weapon": "none",
+            "energy": 0,
+            "skill": {
+                "name": "大海",
+                "desc": "消耗1点攻击力激活，激活后受到伤害时可消耗1能量反弹伤害",
+                "cost": 1,
+                "uses": 1,
+                "timing": "on_take_damage"
+            },
+            "passive": {
+                "name": "孤独",
+                "desc": "每次拼点胜利，自身受到伤害+1（可叠加）",
+                "uses": -1,
+                "timing": "on_dice_win"
+            }
+        },
+        {
+            "id": "li_bo",
+            "name": "李博",
+            "hp": 3,
+            "atk": 1,
+            "weapon": "none",
+            "energy": 0,
+            "skill": {
+                "name": "博学",
+                "desc": "消耗1能量，从能力库中选择一项替换自己的被动或技能",
+                "cost": 1,
+                "uses": -1,
+                "timing": "anytime"
+            },
+            "passive": {
+                "name": "独行",
+                "desc": "行动回合可选择恢复1点HP",
+                "uses": -1,
+                "timing": "on_turn"
+            }
+        },
+        {
+            "id": "gao_da",
+            "name": "搞大",
+            "hp": 3,
+            "atk": 1,
+            "weapon": "none",
+            "energy": 0,
+            "skill": {
+                "name": "录音",
+                "desc": "消耗1能量，限5次，敌方回合开始时变为己方回合",
+                "cost": 1,
+                "uses": 5,
+                "timing": "on_enemy_turn_start"
+            },
+            "passive": {
+                "name": "上面有人",
+                "desc": "受到伤害后，可使自身下次攻击+1（可叠加）",
+                "uses": -1,
+                "timing": "on_take_damage"
+            }
         }
     ],
     "enemy": [
-        {
-            "id": "classmate_strange",
-            "name": "陌生的同学",
-            "hp": 3,
-            "atk": 1,
-            "weapon": "none",
-            "energy": 0,
-            "skill": null,
-            "passive": null
-        },
-        {
-            "id": "classmate_ordinary",
-            "name": "普通的同学",
-            "hp": 3,
-            "atk": 1,
-            "weapon": "none",
-            "energy": 0,
-            "skill": null,
-            "passive": null
-        },
-        {
-            "id": "classmate_maybe",
-            "name": "可能是同学",
-            "hp": 3,
-            "atk": 1,
-            "weapon": "none",
-            "energy": 0,
-            "skill": null,
-            "passive": null
-        }
+        {"id": "classmate_strange", "name": "陌生的同学", "hp": 3, "atk": 1, "weapon": "none", "energy": 0, "skill": null, "passive": null},
+        {"id": "classmate_ordinary", "name": "普通的同学", "hp": 3, "atk": 1, "weapon": "none", "energy": 0, "skill": null, "passive": null},
+        {"id": "classmate_maybe", "name": "可能是同学", "hp": 3, "atk": 1, "weapon": "none", "energy": 0, "skill": null, "passive": null}
     ]
 }
