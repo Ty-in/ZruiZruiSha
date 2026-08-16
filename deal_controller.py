@@ -27,6 +27,17 @@ class DealController:
         self.flip_wait_start = 0.0
         self.waiting_flip = False
         self.data_manager = data_manager
+
+        self.fixed_player_char = None
+        if self.data_manager and self.data_manager.player_characters:
+            self.fixed_player_char = random.choice(self.data_manager.player_characters).copy()
+
+        for card in self.cards:
+            if self.fixed_player_char:
+                card.set_fixed_character(self.fixed_player_char)
+            else:
+                card.set_random_character()
+
         self.enemy_card = None
         self.enemy_start_pos = (WIDTH//2, -100)
         self.enemy_target_pos = (WIDTH//2, 150)
@@ -59,7 +70,7 @@ class DealController:
         if self.phase != 3 or self.waiting_flip:
             return
         self.selected_card = card
-        self.player_selected_char = card.char_data.copy()
+        self.player_selected_char = self.fixed_player_char.copy() if self.fixed_player_char else card.char_data.copy()
         card.face_up = True
         self.waiting_flip = True
         self.flip_wait_start = self.elapsed_time

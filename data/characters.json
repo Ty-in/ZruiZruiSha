@@ -4,6 +4,7 @@
             "id": "huangfu_lai",
             "name": "皇甫赖",
             "hp": 3,
+            "max_hp": 3,
             "atk": 1,
             "weapon": "none",
             "energy": 0,
@@ -18,13 +19,14 @@
                 "name": "耍赖",
                 "desc": "受到攻击时可选择免疫，每场限一次",
                 "uses": 1,
-                "timing": "on_take_damage"
+                "timing": "on_damage_before"
             }
         },
         {
             "id": "shui_niu",
             "name": "水牛",
             "hp": 4,
+            "max_hp": 4,
             "atk": 1,
             "weapon": "none",
             "energy": 0,
@@ -39,13 +41,14 @@
                 "name": "菜",
                 "desc": "拼点胜利时，可选择使下次获得能量翻倍（可叠加）",
                 "uses": -1,
-                "timing": "on_dice_win"
+                "timing": "player_select"
             }
         },
         {
             "id": "zrui_ge",
             "name": "zrui哥",
             "hp": 9,
+            "max_hp": 9,
             "atk": 1,
             "weapon": "none",
             "energy": 0,
@@ -54,7 +57,7 @@
                 "desc": "消耗1点攻击力激活，激活后受到伤害时可消耗1能量反弹伤害",
                 "cost": 1,
                 "uses": 1,
-                "timing": "on_take_damage"
+                "timing": "player_select"
             },
             "passive": {
                 "name": "孤独",
@@ -67,6 +70,7 @@
             "id": "li_bo",
             "name": "李博",
             "hp": 3,
+            "max_hp": 3,
             "atk": 1,
             "weapon": "none",
             "energy": 0,
@@ -75,19 +79,20 @@
                 "desc": "消耗1能量，从能力库中选择一项替换自己的被动或技能",
                 "cost": 1,
                 "uses": -1,
-                "timing": "anytime"
+                "timing": "player_skill"
             },
             "passive": {
                 "name": "独行",
                 "desc": "行动回合可选择恢复1点HP",
                 "uses": -1,
-                "timing": "on_turn"
+                "timing": "player_select"
             }
         },
         {
             "id": "gao_da",
             "name": "搞大",
             "hp": 3,
+            "max_hp": 3,
             "atk": 1,
             "weapon": "none",
             "energy": 0,
@@ -102,13 +107,79 @@
                 "name": "上面有人",
                 "desc": "受到伤害后，可使自身下次攻击+1（可叠加）",
                 "uses": -1,
-                "timing": "on_take_damage"
+                "timing": "on_damage_after"
+            }
+        },
+        {
+            "id": "zhu",
+            "name": "猪",
+            "hp": 3,
+            "max_hp": 5,
+            "atk": 1,
+            "weapon": "none",
+            "energy": 0,
+            "skill": {
+                "name": "进食",
+                "desc": "消耗1能量，与敌方拼点：赢则回复1HP，输则增加1点最大HP，平局重新掷骰",
+                "cost": 1,
+                "uses": -1,
+                "timing": "player_skill"
+            },
+            "passive": {
+                "name": "傲慢",
+                "desc": "每受到两次伤害，回复1点HP",
+                "uses": -1,
+                "timing": "on_damage_after"
+            }
+        },
+        {
+            "id": "da_diao",
+            "name": "大吊",
+            "hp": 2,
+            "max_hp": 2,
+            "atk": 2,
+            "weapon": "none",
+            "energy": 0,
+            "skill": {
+                "name": "亢奋",
+                "desc": "消耗1能量，与敌方拼点，赢则造成一次普通攻击伤害",
+                "cost": 1,
+                "uses": -1,
+                "timing": "player_skill"
+            },
+            "passive": {
+                "name": "强撑",
+                "desc": "受到的伤害固定为1点",
+                "uses": -1,
+                "timing": "on_damage_before"
+            }
+        },
+        {
+            "id": "yazi",
+            "name": "鸭子",
+            "hp": 3,
+            "max_hp": 3,
+            "atk": 1,
+            "weapon": "none",
+            "energy": 0,
+            "skill": {
+                "name": "嘎嘎",
+                "desc": "消耗1能量，与敌方拼点，胜利则继续拼点，失败则恢复等同于胜利次数的HP",
+                "cost": 1,
+                "uses": -1,
+                "timing": "player_skill"
+            },
+            "passive": {
+                "name": "装嫩",
+                "desc": "每拼点胜利2次，获得1能量",
+                "uses": -1,
+                "timing": "on_dice_win"
             }
         }
     ],
     "enemy": [
-        {"id": "classmate_strange", "name": "陌生的同学", "hp": 3, "atk": 1, "weapon": "none", "energy": 0, "skill": null, "passive": null},
-        {"id": "classmate_ordinary", "name": "普通的同学", "hp": 3, "atk": 1, "weapon": "none", "energy": 0, "skill": null, "passive": null},
-        {"id": "classmate_maybe", "name": "可能是同学", "hp": 3, "atk": 1, "weapon": "none", "energy": 0, "skill": null, "passive": null}
+        {"id": "classmate_strange", "name": "陌生的同学", "hp": 3, "max_hp": 3, "atk": 1, "weapon": "none", "energy": 0, "skill": null, "passive": null},
+        {"id": "classmate_ordinary", "name": "普通的同学", "hp": 3, "max_hp": 3, "atk": 1, "weapon": "none", "energy": 0, "skill": null, "passive": null},
+        {"id": "classmate_maybe", "name": "可能是同学", "hp": 3, "max_hp": 3, "atk": 1, "weapon": "none", "energy": 0, "skill": null, "passive": null}
     ]
 }

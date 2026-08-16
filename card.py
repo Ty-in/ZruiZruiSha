@@ -1,4 +1,3 @@
-# card.py
 import pygame
 import random
 from config import *
@@ -17,7 +16,6 @@ class PaperCard:
         self.is_enemy = is_enemy
         self.data_manager = data_manager
         self.char_data = None
-        self.set_random_character()
         self.x = 0
         self.y = 0
         self.rotation = 0.0
@@ -25,6 +23,9 @@ class PaperCard:
         self.draw_rect = pygame.Rect(0, 0, self.width, self.height)
         self.font_small = load_font(18)
         self.font_large = load_font(40)
+
+    def set_fixed_character(self, char_data):
+        self.char_data = char_data.copy()
 
     def set_random_character(self):
         if self.data_manager is None:
@@ -108,7 +109,6 @@ class PaperCard:
 
     def draw_stickman(self, surface, rect):
         cx, cy = rect.width//2, rect.height//2 - 2
-        # 基本身体
         pygame.draw.circle(surface, COLOR_CARD_TEXT, (cx, cy - 25), 11, 2)
         pygame.draw.line(surface, COLOR_CARD_TEXT, (cx, cy - 12), (cx, cy + 14), 3)
         pygame.draw.line(surface, COLOR_CARD_TEXT, (cx, cy - 3), (cx - 18, cy - 6), 3)

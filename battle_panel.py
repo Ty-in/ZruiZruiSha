@@ -45,7 +45,9 @@ class BattlePanel:
         ease = 1 - math.pow(1 - self.progress, 2)
         self.x = self.target_x + (WIDTH + 50 - self.target_x) * (1 - ease)
 
-    def draw(self, surface, mouse_pos=None, player_energy=0, player_multiplier=1, energy_multiplier=1, player_id="", ocean_activated=False, attack_buff=0):
+    def draw(self, surface, mouse_pos=None, player_energy=0, player_multiplier=1,
+             energy_multiplier=1, player_id="", ocean_activated=False,
+             attack_buff=0, damage_count=0):
         if not self.active:
             return
         self.player_multiplier = player_multiplier
@@ -70,16 +72,16 @@ class BattlePanel:
         self.hover_rects = []
         self.skill_button_rect = None
 
-        # 敌方（上）
         self._draw_char_info(surface, self.enemy_data, self.x + 12, self.y + 16, self.width - 24,
-                             self.enemy_skill, self.enemy_passive, False, 0, "", False, 0)
-        # 玩家（下）
+                             self.enemy_skill, self.enemy_passive, False, 0, "", False, 0, 0)
+
         self._draw_char_info(surface, self.player_data, self.x + 12, mid_y + 16, self.width - 24,
-                             self.player_skill, self.player_passive, True, player_energy, player_id, ocean_activated, attack_buff)
+                             self.player_skill, self.player_passive, True, player_energy,
+                             player_id, ocean_activated, attack_buff, damage_count)
 
     def _draw_char_info(self, surface, char_data, x, y, width,
-                        skill_obj, passive_obj, is_player, player_energy, player_id, ocean_activated, attack_buff=0):
-        # 名字
+                        skill_obj, passive_obj, is_player, player_energy,
+                        player_id, ocean_activated, attack_buff, damage_count=0):
         name_surf = self.font_title.render(char_data["name"], True, COLOR_CARD_TEXT)
         surface.blit(name_surf, (x, y))
         attr_x = x + name_surf.get_width() + 8
@@ -92,27 +94,22 @@ class BattlePanel:
             bonus = max(0, self.player_multiplier - 1) + attack_buff
         energy = char_data.get("energy", 0)
 
-        # 血量
         for i in range(max_hp):
             cx = attr_x + i * 16
             cy = y + 2
             draw_heart(surface, cx, cy, 6, filled=(i < hp), color=COLOR_HP if i < hp else COLOR_HP_LOST)
         attr_x += max_hp * 16 + 6 if max_hp > 0 else 6
 
-        # 攻击力（黑剑）
         for i in range(atk):
             draw_sword(surface, attr_x + i * 18, y + 2, color=COLOR_ATK)
         attr_x += atk * 18 + 6 if atk > 0 else 6
 
-        # 额外加成（黄剑）
         for i in range(bonus):
             draw_sword(surface, attr_x + i * 18, y + 2, color=COLOR_ATK_BONUS)
         attr_x += bonus * 18 + 6 if bonus > 0 else 6
 
-        # 能量
         draw_energy(surface, attr_x, y + 2, energy)
 
-        # 被动
         row_y = y + 34
         if passive_obj:
             passive_name = passive_obj.get("name", "")
@@ -128,6 +125,14 @@ class BattlePanel:
                 display = passive_name + "（已失效）"
             else:
                 display = "无"
+
+            if passive_name == "装嫩" and is_player:
+                pvp_count = char_data.get("pvp_win_count", 0)
+                display += f"（拼点胜利{pvp_count}/2）"
+
+            if passive_name == "傲慢":
+                display += f"（受击{damage_count}/2）"
+
             text = f"被动：{display}"
             color = (180, 80, 80) if uses == 0 else COLOR_CARD_TEXT
         else:
@@ -139,7 +144,6 @@ class BattlePanel:
         if passive_obj:
             self.hover_rects.append((rect, passive_obj.get("desc", ""), "被动"))
 
-        # 技能
         row_y += 22
         if is_player and skill_obj:
             skill_name = skill_obj.get("name", "")
@@ -152,29 +156,36 @@ class BattlePanel:
                 desc_rect = pygame.Rect(x, row_y, surf.get_width(), surf.get_height())
                 self.hover_rects.append((desc_rect, skill_desc, "技能"))
             else:
-                cost = skill_obj.get("cost", 999)
                 uses = char_data.get("skill_uses", 0)
-                can_use = (player_energy >= cost) and (uses != 0)
                 display_name = skill_name
                 if uses == -1:
                     display_name += "（∞）"
                 elif uses > 0:
                     display_name += f"（剩余{uses}次）"
-                text = f"技能：{display_name}"
-                surf = self.font_text.render(text, True, COLOR_CARD_TEXT)
-                surface.blit(surf, (x, row_y))
-                btn_x = x + surf.get_width() + 10
-                btn_y = row_y - 2
-                btn_w = 40
-                btn_h = 22
-                color = (120, 200, 120) if can_use else (180, 180, 180)
-                pygame.draw.rect(surface, color, (btn_x, btn_y, btn_w, btn_h), border_radius=4)
-                pygame.draw.rect(surface, (60, 60, 60), (btn_x, btn_y, btn_w, btn_h), 1, border_radius=4)
-                btn_text = self.font_small.render("使用", True, (0,0,0))
-                surface.blit(btn_text, (btn_x + 5, btn_y + 3))
-                self.skill_button_rect = pygame.Rect(btn_x, btn_y, btn_w, btn_h)
-                desc_rect = pygame.Rect(x, row_y, surf.get_width(), surf.get_height())
-                self.hover_rects.append((desc_rect, skill_desc, "技能"))
+                if skill_obj.get("timing") == "anytime":
+                    cost = skill_obj.get("cost", 999)
+                    can_use = (player_energy >= cost) and (uses != 0)
+                    text = f"技能：{display_name}"
+                    surf = self.font_text.render(text, True, COLOR_CARD_TEXT)
+                    surface.blit(surf, (x, row_y))
+                    btn_x = x + surf.get_width() + 10
+                    btn_y = row_y - 2
+                    btn_w = 40
+                    btn_h = 22
+                    color = (120, 200, 120) if can_use else (180, 180, 180)
+                    pygame.draw.rect(surface, color, (btn_x, btn_y, btn_w, btn_h), border_radius=4)
+                    pygame.draw.rect(surface, (60, 60, 60), (btn_x, btn_y, btn_w, btn_h), 1, border_radius=4)
+                    btn_text = self.font_small.render("使用", True, (0,0,0))
+                    surface.blit(btn_text, (btn_x + 5, btn_y + 3))
+                    self.skill_button_rect = pygame.Rect(btn_x, btn_y, btn_w, btn_h)
+                    desc_rect = pygame.Rect(x, row_y, surf.get_width(), surf.get_height())
+                    self.hover_rects.append((desc_rect, skill_desc, "技能"))
+                else:
+                    text = f"技能：{display_name}"
+                    surf = self.font_text.render(text, True, COLOR_CARD_TEXT)
+                    surface.blit(surf, (x, row_y))
+                    desc_rect = pygame.Rect(x, row_y, surf.get_width(), surf.get_height())
+                    self.hover_rects.append((desc_rect, skill_desc, "技能"))
         elif is_player and not skill_obj:
             text = "技能：无"
             surf = self.font_text.render(text, True, COLOR_CARD_TEXT)
@@ -190,7 +201,6 @@ class BattlePanel:
                 rect = pygame.Rect(x, row_y, surf.get_width(), surf.get_height())
                 self.hover_rects.append((rect, skill_obj.get("desc", ""), "技能"))
 
-        # 能量倍率
         if is_player and self.energy_multiplier_display > 1:
             row_y += 22
             text = f"能量倍率：×{self.energy_multiplier_display}"
